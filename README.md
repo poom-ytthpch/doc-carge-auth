@@ -1,2 +1,2 @@
-# doc-carge-auth
+# DocChargeAuthService
 Auth Service of Doccharge Project
