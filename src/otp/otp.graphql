@@ -1,0 +1,23 @@
+scalar Date
+
+type SendOtpResponse {
+  refId: String
+  expiredAt: Date
+  otp: String
+}
+
+input VerifyOtpInput {
+  mobile: String!
+  refId: String!
+  otp: String!
+}
+
+input SendOtpInput {
+  mobile: String!
+  purpose: String!
+}
+
+type Mutation {
+  sendOtp(input: SendOtpInput!): SendOtpResponse!
+  verifyOtp(input: VerifyOtpInput!): Boolean!
+}

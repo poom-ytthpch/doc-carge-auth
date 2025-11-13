@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleType {
+  ROOT
+  ADMIN
+  USER
+  GUEST
+}
+
+enum UserStatus {
+  ACTIVE
+  IN_ACTIVE
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String?    @unique
+  mobile    String     @unique
+  password  String?
+  pin       String
+  status    UserStatus @default(ACTIVE)
+  isOwner   Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  roles     Role[]
+}
+
+model Role {
+  id        String   @id @default(cuid())
+  type      RoleType
+  createdAt DateTime
+  updatedAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Otp {
+  id        String   @id @default(cuid())
+  mobile    String // หมายเลขโทรศัพท์ที่ส่ง OTP ไป
+  code      String // รหัส OTP (เช่น 6 หลัก)
+  refId     String // รหัสอ้างอิง (เช่น sessionId หรือ transactionId)
+  purpose   String // เช่น "REGISTER" | "LOGIN" | "TOPUP" | "RESET_PIN"
+  isUsed    Boolean  @default(false)
+  expiredAt DateTime // เวลาหมดอายุ (เช่น +5 นาที)
+  createdAt DateTime @default(now())
+}

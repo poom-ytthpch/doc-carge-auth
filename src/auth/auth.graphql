@@ -1,0 +1,36 @@
+scalar Date
+
+input MobileRegisterRequest {
+  mobile: String!
+  pin: String!
+}
+
+input LoginRequest {
+  mobile: String!
+  pin: String!
+}
+
+type User {
+  id: String
+  email: String
+  userId: String
+  mobile: String
+  pin: String
+  updatedAt: Date
+  createdAt: Date
+}
+
+type LoginResponse {
+  status: Boolean!
+  message: String!
+  token: String
+}
+
+type Query {
+  getUserByMobile(mobile:String!): User!
+}
+
+type Mutation {
+  mobileRegister(input: MobileRegisterRequest!): CommonResponse!
+  login(input: LoginRequest!): LoginResponse!
+}

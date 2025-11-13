@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+
+package auth;
+
+service AuthService {
+  rpc GetUserByMobile (GetUserByMobileWalletRequest) returns (GetUserByMobileResponse);
+  rpc VerifyToken (VerifyTokenRequest) returns (VerifyTokenResponses);
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+message VerifyTokenResponses {
+  string message = 1;
+  User data = 2;
+  int32 status = 3;
+}
+
+message GetUserByMobileWalletRequest {
+  string mobile = 1;
+}
+
+message GetUserByMobileResponse {
+  string message = 1;
+  User data = 2;
+  int32 status = 3;
+}
+
+message Role {
+    string id = 1;
+    string type = 2;
+}
+
+message User {
+  string id = 1;
+  string mobile = 2;
+  repeated Role roles = 3;
+  string status = 4;
+  string pin = 5;
+}
+
